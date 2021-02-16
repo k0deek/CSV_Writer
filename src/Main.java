@@ -13,12 +13,14 @@ public class Main {
         ListIterator<Map.Entry<String, Integer>> swIterator = sortedWords.listIterator();
         sortedWords = takeText.sortMap();
 
-        double freq;
         FileWriter writer = new FileWriter(args[1], false);
+
+        int countAllWords = takeText.getterCountWords();
         for (Map.Entry<String, Integer> item : sortedWords){
-            freq =  (double) Math.round(1000 * takeText.freq(item.getKey())) / 1000;
+            double freq =  (double) Math.round(1000 * ((double)item.getValue()) / countAllWords * 100) / 1000;
             writer.write(item.getKey() + ";" + item.getValue() + ";" + freq + ";\n");
-            writer.flush();
         }
+        writer.flush();
+        writer.close();
     }
 }

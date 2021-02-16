@@ -16,29 +16,26 @@ public class StatReader {
         {
             reader = new InputStreamReader(new FileInputStream(infile));
             int intSymbol = reader.read();
-            int lengthWord = 0;
             char symbol = (char) intSymbol;
             StringBuilder sb = new StringBuilder();
             countWords = 0;
             while (intSymbol != -1){
                 if (isLetterOrDigit(symbol)){
-                    sb.insert(lengthWord, symbol); //составляем слово
-                    lengthWord = sb.length();
+                    sb.append(symbol); //составляем слово
                 }
-                else if (lengthWord != 0) {
+                else if (sb.length() != 0) {
                     if (Words.containsKey(sb.toString())){
-                        Integer val = Words.get(sb.toString()) + 1;
-                        Words.put(sb.toString(), val);
+                        Words.put(sb.toString(), Words.getOrDefault(sb.toString(), 0) + 1);
                     }
                     else {
                         Words.put(sb.toString().toLowerCase(), 1);
                     }
-                    sb.delete(0, lengthWord);
-                    lengthWord = 0;
+                    sb = new StringBuilder();
                     countWords++;
                 }
                 intSymbol = reader.read();
                 symbol = (char) intSymbol;
+
             }
         }
         catch (IOException e)
@@ -66,8 +63,8 @@ public class StatReader {
         toSort.sort(HashMap.Entry.<String, Integer>comparingByValue().reversed());
         return toSort;
     }
-
-    double freq(String word){
-        return ((double)Words.get(word)) / countWords * 100;
+    
+    int getterCountWords(){
+        return countWords;
     }
 }
